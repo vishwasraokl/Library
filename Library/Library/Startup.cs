@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Library
 {
@@ -35,6 +36,13 @@ namespace Library
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Library", Version = "v1" });
             });
             services.AddDbContext<LibraryDataContext>(op => op.UseSqlServer(Configuration.GetConnectionString("LibraryDataContext")));
+
+            services.AddMvc()
+     .AddNewtonsoftJson(
+          options =>
+          {
+              options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+          });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

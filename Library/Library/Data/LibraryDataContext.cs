@@ -21,7 +21,17 @@ namespace Library.Data
         {
             modelBuilder.Entity<User>()
        .ToTable("tblBarrower");
+            modelBuilder.Entity<Book>()
+       .ToTable("tblBook");
+            modelBuilder.Entity<Transaction>()
+       .ToTable("tblTransaction");
         }
+
+
+        public DbSet<Library.Models.Book> Book { get; set; }
+
+
+        public DbSet<Library.Models.Transaction> Transaction { get; set; }
 
     }
 }

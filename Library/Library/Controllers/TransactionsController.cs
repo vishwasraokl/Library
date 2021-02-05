@@ -12,47 +12,47 @@ namespace Library.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TransactionsController : ControllerBase
     {
         private readonly LibraryDataContext _context;
 
-        public UsersController(LibraryDataContext context)
+        public TransactionsController(LibraryDataContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Transactions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransaction()
         {
-            return await _context.User.Include(u => u.Transaction).ToListAsync();
+            return await _context.Transaction.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Transactions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
-            var user = await _context.User.Include(u => u.Transaction).FirstOrDefaultAsync(u=>u.Id==id);
+            var transaction = await _context.Transaction.FindAsync(id);
 
-            if (user == null)
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return transaction;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Transactions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
         {
-            if (id != user.Id)
+            if (id != transaction.TransactionId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(transaction).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace Library.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!TransactionExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace Library.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Transactions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
-            _context.User.Add(user);
+            _context.Transaction.Add(transaction);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetTransaction", new { id = transaction.TransactionId }, transaction);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Transactions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteTransaction(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+            var transaction = await _context.Transaction.FindAsync(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            _context.Transaction.Remove(transaction);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool TransactionExists(int id)
         {
-            return _context.User.Any(e => e.Id == id);
+            return _context.Transaction.Any(e => e.TransactionId == id);
         }
     }
 }
