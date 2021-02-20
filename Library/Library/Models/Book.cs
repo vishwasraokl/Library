@@ -20,6 +20,9 @@ namespace Library.Models
 
         public DateTime LastUpdated { get; set; }
 
+        public DateTime DateAddedToLibrary { get; set; }
+        
+
         public virtual ICollection<Transaction> Transaction { get; set; }
 
     }
