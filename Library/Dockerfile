@@ -10,10 +10,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Library/Library/Library.csproj", "Library/"]
-RUN dotnet restore "Library/Library/Library.csproj"
+COPY ["Library/Library.csproj", "LibraryProj/"]
+RUN dotnet restore "Library/Library.csproj"
 COPY . .
-WORKDIR "/src/Library"
+WORKDIR "/src/LibraryProj"
 RUN dotnet build "Library.csproj" -c Release -o /app/build
 
 FROM build AS publish
